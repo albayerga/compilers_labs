@@ -9,6 +9,8 @@
  */
 #include "./comp-p1.h"
 
+//hello 
+
 int main(int argc, char**argv) {
     
     int i;
