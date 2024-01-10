@@ -1,0 +1,20 @@
+# Makefile comp-p1
+#
+# Execution in cygwin (command line): 
+# Enter cygwin and change to the directory where you have the code. 
+# Put the mymakefile in the same directory
+# Run the makefile with the instruction: make -f mymakefile
+# The makefile generates a comp-p1.exe
+# Run the executable with the instruction: ./comp-p1.exe
+#
+# (Do the necessary modifications to include more libraries and relations 
+# between code files)
+
+comp-p1: comp-p1.o lib1.o 
+	gcc -o comp-p1 comp-p1.o lib1.o 
+
+lib1.o: lib1.c lib1.h
+	gcc -c lib1.c
+
+comp-p1.o: comp-p1.c comp-p1.h 
+	gcc -c comp-p1.c
