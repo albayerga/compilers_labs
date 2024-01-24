@@ -67,8 +67,7 @@ char* takeWord(FILE* inputFile, long* filePosition)
             i++;
         }
     }
-    free(word);
-    return NULL;
+    return word;
 }
 
 struct KeyValuePair
@@ -167,5 +166,7 @@ int main(int argc, char *argv[])
         {
             fprintf(outputFile, "%s", word);
         }
+
+        free(word);
     }
 }
