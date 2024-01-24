@@ -47,8 +47,9 @@ void toggleFlags(int argc, char *argv[])
     }
 }
 
-char* takeWord(FILE* inputFile)
+char* takeWord(FILE* inputFile, long* filePosition)
 {
+    fseek(inputFile, *filePosition, SEEK_SET); //set position to read word
     char* word = malloc(100);
     int c;
     int i = 0;
@@ -57,6 +58,7 @@ char* takeWord(FILE* inputFile)
         if(c == ' ' || c == '\n' || c == '\t')
         {
             word[i] = '\0';
+            *filePosition = ftell(inputFile); //update file position
             return word;
         }
         else
@@ -65,6 +67,7 @@ char* takeWord(FILE* inputFile)
             i++;
         }
     }
+    free(word);
     return NULL;
 }
 
@@ -79,10 +82,14 @@ int dictionarySize = 0;
 
 
 /*-----------------------------------------------------------------------------------*/
-
 int main(int argc, char *argv[])
 {
-    if(argc < 3)
+    argc = 3;
+    argv[0] = "./preprocessor_new";
+    argv[1] = "-d";
+    argv[2] = "prueba.c";
+
+    if(argc < 2 )
     {
         printf("Usage: preprocessor [flags] <program.c>\n");
         return 0;
@@ -112,11 +119,12 @@ int main(int argc, char *argv[])
 
     //process file
     //read the file, when you find a key word, if the flag is on, process it
+    long filePosition = 0;
     while(!feof(inputFile))
     {
         copy = TRUE;
 
-        char* word = takeWord(inputFile);
+        char* word = takeWord(inputFile, &filePosition);
 
         for(int i = 0; i < dictionarySize; i++)
         {
