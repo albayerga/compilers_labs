@@ -61,6 +61,13 @@ int removeComments(const char *input_file_name)
 }
 
 /* --------------------------------------------- */
+void processDefine(const char *input_file_name)
+{
+    //...
+}
+
+
+/* --------------------------------------------- */
 
 void handleInclude(FILE *output, const char *filename)
 {
@@ -79,6 +86,7 @@ void handleInclude(FILE *output, const char *filename)
 
     fclose(includedFile);
 }
+
 
 void processInclude(const char *input_file_name)
 {
@@ -108,6 +116,10 @@ void processInclude(const char *input_file_name)
                 // Assume included files are in the same directory as the source file
                 handleInclude(output, filename);
                 continue;
+            }
+            else
+            {
+                fprintf(output, "#%s", directive);
             }
         }
         fputc(c, output);
