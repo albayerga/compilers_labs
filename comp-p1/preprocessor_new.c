@@ -83,16 +83,18 @@ int dictionarySize = 0;
 /*-----------------------------------------------------------------------------------*/
 int main(int argc, char *argv[])
 {
-    argc = 3;
-    argv[0] = "./preprocessor_new";
-    argv[1] = "-d";
-    argv[2] = "prueba.c";
+    //esto era para hacer debug
+    // argc = 3;
+    // argv[0] = "./preprocessor_new";
+    // argv[1] = "-d";
+    // argv[2] = "prueba.c";
 
     if(argc < 2 )
     {
         printf("Usage: preprocessor [flags] <program.c>\n");
         return 0;
     }
+    //else if (-help) -> show man page
 
     toggleFlags(argc, argv);
     int copy;
