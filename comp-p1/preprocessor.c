@@ -1,5 +1,8 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+
+/* --------------------------------------------- */
 
 void printManPage()
 {
@@ -11,6 +14,8 @@ void printManPage()
     printf("  -all    Do all processing (comments and directives)\n");
     printf("  -help   Print this man page\n");
 }
+
+/* --------------------------------------------- */
 
 int removeComments(const char *input_file_name)
 {
@@ -25,7 +30,6 @@ int removeComments(const char *input_file_name)
         return 1; // Return an error code
     }
 
-    // Code to read input file, remove comments, and write to output file
     int c;
     int last = 0;
     while ((c = fgetc(input)) != EOF)
@@ -55,6 +59,66 @@ int removeComments(const char *input_file_name)
 
     return 0;
 }
+
+/* --------------------------------------------- */
+
+void handleInclude(FILE *output, const char *filename)
+{
+    FILE *includedFile = fopen(filename, "r");
+
+    if (includedFile == NULL)
+    {
+        perror("Error opening included file");
+    }
+
+    int c;
+    while ((c = fgetc(includedFile)) != EOF)
+    {
+        fputc(c, output);
+    }
+
+    fclose(includedFile);
+}
+
+void processInclude(const char *input_file_name)
+{
+    char output_file_name[100];
+    snprintf(output_file_name, sizeof(output_file_name), "%s_pp.c", input_file_name);
+
+    FILE *input = fopen(input_file_name, "r");
+    FILE *output = fopen(output_file_name, "w");
+
+    if (input == NULL || output == NULL)
+    {
+        perror("Error opening files");
+    }
+
+    int c;
+    while ((c = fgetc(input)) != EOF)
+    {
+        if (c == '#')
+        {
+            char directive[100];
+            fscanf(input, "%99s", directive);
+            if (strcmp(directive, "include") == 0)
+            {
+                char filename[100];
+                fscanf(input, " \"%99[^\"]\"", filename); // Read the filename between quotes
+
+                // Assume included files are in the same directory as the source file
+                handleInclude(output, filename);
+                continue;
+            }
+        }
+        fputc(c, output);
+    }
+    fclose(input);
+    fclose(output);
+}
+
+/* --------------------------------------------- */
+
+//MAIN FUNCTION
 
 int main(int argc, char *argv[])
 {
@@ -89,15 +153,22 @@ int main(int argc, char *argv[])
     //-d
     if (argc >= 2 && strcmp(argv[1], "-d") == 0)
     {
-        printf("This will replace all directives starting with #\n");
-        return 0;
+        if(argc != 3)
+        {
+            printf("Usage: preprocessor -c <program.c>\n");
+            return 0;
+        }
+        else
+        {
+            const char *filename = argv[2];
+            processInclude(filename);
+        }
     }
     
     //-all
     if (argc >= 2 && strcmp(argv[1], "-all") == 0)
     {
         printf("This will do all processing (comments and directives)\n");
-        return 0;
     }
 
     return 0;
