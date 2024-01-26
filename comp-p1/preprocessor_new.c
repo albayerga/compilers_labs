@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #define TRUE 1
 #define FALSE 0
@@ -18,6 +19,31 @@ struct structFlags
 
 struct structFlags flags = {FALSE, FALSE, FALSE, FALSE, FALSE, FALSE};
 
+//GLOBAL DICTIONARY
+struct KeyValuePair
+{
+    char key[50];
+    char value[50];
+};
+
+struct KeyValuePair dictionary[1000];
+int dictionarySize = 0;
+
+
+//DEFINE PUNCTUATION
+int myPunct(char c)
+{
+    if(c == ',' || c == ';' || c == '(' || c == ')' || c == '{' || c == '}' || c == '[' || c == ']' || c == '.' || c == ':' || c == '?' || c == '!' || c == '-' || c == '+' || c == '%' || c == '=' || c == '<' || c == '>' || c == '&' || c == '|' || c == '^' || c == '~' || c == '\\' || c == '\'' || c == '\"' || c == '`' || c == '@' || c == '$' || c == '_')
+    {
+        return TRUE;
+    }
+    else
+    {
+        return FALSE;
+    }
+}
+
+//TOGGLE FLAGS
 void toggleFlags(int argc, char *argv[])
 {
     for(int i = 1; i < argc; i++)
@@ -47,18 +73,34 @@ void toggleFlags(int argc, char *argv[])
     }
 }
 
+//TAKE WORD
 char* takeWord(FILE* inputFile, long* filePosition)
 {
     fseek(inputFile, *filePosition, SEEK_SET); //set position to read word
     char* word = malloc(100);
     int c;
     int i = 0;
+
     while((c = fgetc(inputFile)) != EOF)
     {
-        if(c == ' ' || c == '\n' || c == '\t')
+        if(i==0 && myPunct(c)==TRUE)
         {
+            word[i] = c;
+            *filePosition = ftell(inputFile);
+            return word;
+        }
+
+        if(c == ' ' || c == '\n' || c == '\t' || myPunct(c) == TRUE)
+        {
+            if(myPunct(c))
+            {
+                *filePosition = ftell(inputFile)-1;
+            }
+            else
+            {
+                *filePosition = ftell(inputFile);
+            }
             word[i] = '\0';
-            *filePosition = ftell(inputFile); //update file position
             return word;
         }
         else
@@ -70,24 +112,17 @@ char* takeWord(FILE* inputFile, long* filePosition)
     return word;
 }
 
-struct KeyValuePair
-{
-    char key[50];
-    char value[50];
-};
-
-struct KeyValuePair dictionary[1000];
-int dictionarySize = 0;
+//
 
 
 /*-----------------------------------------------------------------------------------*/
 int main(int argc, char *argv[])
 {
     //esto era para hacer debug
-    // argc = 3;
-    // argv[0] = "./preprocessor_new";
-    // argv[1] = "-d";
-    // argv[2] = "prueba.c";
+    argc = 3;
+    argv[0] = "./preprocessor_new";
+    argv[1] = "-d";
+    argv[2] = "prueba.c";
 
     if(argc < 2 )
     {
