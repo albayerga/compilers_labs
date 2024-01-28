@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "comp-p1.h": "c"
+        "comp-p1.h": "c",
+        "processdefine.h": "c",
+        "string.h": "c"
     }
 }

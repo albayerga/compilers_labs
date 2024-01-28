@@ -1,7 +1,15 @@
-//we are in .h file
+/*
+ * Compilers
+ * Practice 1: c pre-processor
+ * File name: comp-p1.h
+ * General data structures and definitions of the pre-processor
+ *
+ * Responsible: ALBA YERGA, ROGER VIADER, ORIOL ROCA, ADRIA SORIA
+ *
+ */
 
 #include <stdio.h>
-
+#include <stdlib.h>
 
 #define ON              1
 #define OFF             0

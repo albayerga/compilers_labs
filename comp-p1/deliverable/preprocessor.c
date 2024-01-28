@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-
+#include "macros.c"
 
 #define TRUE 1
 #define FALSE 0
@@ -24,15 +24,6 @@ struct structFlags
 
 struct structFlags flags = {FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE};
 
-//GLOBAL DICTIONARY
-struct KeyValuePair
-{
-    char key[50];
-    char value[50];
-};
-
-struct KeyValuePair dictionary[1000];
-int dictionarySize = 0;
 
 //TOGGLE FLAGS
 void toggleFlags(int argc, char *argv[])
@@ -151,6 +142,36 @@ char *takeFileWord(FILE *inputFile)
 
 /* --------------------------------------------- */
 
+//PROCESS COMMENTS
+
+int removeComments1(FILE *file) {
+    int c;
+
+    while ((c = fgetc(file)) != EOF) {
+        if (c == '\n') {
+            fseek(file, -1L, SEEK_CUR);
+            return 0;
+        }
+    }
+    return 0;
+}
+
+int removeComments2(FILE *file) {
+    int c;
+
+    while ((c = fgetc(file)) != EOF) {
+        if (c == '*') {
+            c = fgetc(file);
+            if (c == '/') {
+                return 1;
+            } else {
+                ungetc(c, file);
+            }
+        }
+    }
+    return 0;
+}
+
 //PROCESS FILE
 void processFile(FILE *inputFile, FILE *outputFile, struct structFlags flags)
 {
@@ -163,7 +184,7 @@ void processFile(FILE *inputFile, FILE *outputFile, struct structFlags flags)
         // Check flags and keywords
         if ((strcmp(word, "#define") == 0) && (flags.processDirectives == TRUE))
         {
-            // Call processDefine (to be implemented)
+            //processMacro(inputFile, word); //segmentation fault - arreglar algo de la memoria
             copy = FALSE;
         }
 
@@ -182,10 +203,18 @@ void processFile(FILE *inputFile, FILE *outputFile, struct structFlags flags)
             copy = FALSE;
         }
 
-        if (((strcmp(word, "//") == 0) || (strcmp(word, "/*"))) && (flags.processComments == TRUE))
+        if((strcmp(&word[0],"/") == 0) && (flags.processComments == TRUE))
         {
-            // Call processComments (to be implemented)
-            copy = FALSE;
+            int nc = fgetc(inputFile);
+            if(nc == '/'){
+                removeComments1(inputFile);
+                copy = FALSE;
+
+            }else if(nc == '*'){
+                removeComments2(inputFile);
+                copy = FALSE;
+            }
+
         }
 
         if (copy == TRUE)
@@ -214,16 +243,12 @@ long processInclude(FILE *inputFile, FILE *outputFile, const char *filename)
     return ftell(inputFile);
 }
 
+
 /* --------------------------------------------- */
 
 //MAIN
 int main(int argc, char *argv[])
 {
-    argc = 3;
-    argv[0] = "./my_preprocessor";
-    argv[1] = "-d";
-    argv[2] = "comp-p1.c";
-
     toggleFlags(argc, argv);
 
     if(argc < 2 )
@@ -264,4 +289,3 @@ int main(int argc, char *argv[])
     fclose(outputFile);
     return 0;
 }
-

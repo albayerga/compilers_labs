@@ -1,11 +1,21 @@
+/*
+ * Compilers
+ * Practice 1: c pre-processor
+ * File name: comp-p1.c
+ * Main program file
+ * Additional files: comp-p1.h, comp-p1.c, lib1.h, lib1.c
+ * 
+ * Responsible: ALBA YERGA, ROGER VIADER, ORIOL ROCA, ADRIA SORIA
+ */
 #include "./comp-p1.h"
+#include <stdio.h>
+#include <string.h>
 
-//hello 
-
-int main(int argc, char**argv) {
-    
+int main(int argc, char** argv) {
+    //Global vars
     int i;
- 
+    
+
     printf("hola que tal com vas?\n");
     ofile = stdout;             // default is stdout
     ofile = fopen( PRINTDESTFILE, "w");
