@@ -1,1 +1,2 @@
-#include hello
+#include hello.h
+/* hello */

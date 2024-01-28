@@ -6,6 +6,12 @@
 #define TRUE 1
 #define FALSE 0
 
+//declare functions
+void processInclude(FILE *inputFile, FILE *outputFile, const char *filename);
+void processFile(FILE *inputFile, FILE *outputFile, long *filePosition);
+
+
+
 //GLOBAL FLAGS
 struct structFlags
 {
@@ -73,7 +79,7 @@ void toggleFlags(int argc, char *argv[])
     }
 }
 
-//TAKE WORD
+//SPECIAL WORD
 int specialWord(char* word)
 {
     if(
@@ -92,29 +98,121 @@ int specialWord(char* word)
     }
 }
 
+//TAKE WORD
 char *takeWord(FILE *inputFile, long *filePosition)
 {
-    fseek(inputFile, *filePosition, SEEK_SET);
-    char *word = malloc(100);
-    int i = 0;
-    char c;
-    while ((c = fgetc(inputFile)) != EOF)
+    char *word = NULL;
+    int wordSize = 0;
+    int c;
+    int isSpecialWord = FALSE;
+
+    while (!feof(inputFile))
     {
-        if(c == ' ' || c == '\n' || c == '\t' || specialWord(word) == TRUE)
+        c = fgetc(inputFile);
+        if (c == EOF)
         {
-            word[i] = '\0';
-            *filePosition = ftell(inputFile);
-            return word;
+            break;
+        }
+
+        if (isspace(c) || myPunct(c))
+        {
+            if (wordSize > 0)
+            {
+                ungetc(c, inputFile);
+                break;
+            }
+            else
+            {
+                continue;
+            }
+        }
+
+        if (wordSize == 0)
+        {
+            word = malloc(1);
         }
         else
         {
-            word[i] = c;
-            i++;
+            word = realloc(word, wordSize + 1);
         }
+
+        word[wordSize] = c;
+        wordSize++;
     }
-    word[i] = '\0';
-    *filePosition = ftell(inputFile);
+
+    if (word != NULL)
+    {
+        word = realloc(word, wordSize + 1);
+        word[wordSize] = '\0';
+    }
+
     return word;
+}
+
+/* --------------------------------------------- */
+//PROCESS FILE
+void processFile(FILE *inputFile, FILE *outputFile, long *filePosition) {
+    int copy = TRUE;
+
+    while (!feof(inputFile)) {
+        char *word = takeWord(inputFile, filePosition);
+
+        for (int i = 0; i < dictionarySize; i++) {
+            if (strcmp(dictionary[i].key, word) == 0) {
+                // Replace word with its value from the dictionary
+                word = strdup(dictionary[i].value);
+                break;
+            }
+        }
+
+        // Check flags and keywords
+        if ((strcmp(word, "#define") == 0) && (flags.processDirectives == TRUE)) {
+            // Call processDefine (to be implemented)
+            copy = FALSE;
+        }
+
+        if ((strcmp(word, "#include") == 0) && (flags.processInclude == TRUE)) {
+            word = takeWord(inputFile, filePosition);
+            if (word != NULL) {
+                // Process the included file
+                processInclude(inputFile, outputFile, word);
+                free(word);
+            }
+            copy = FALSE; // Do not copy the #include line to the output
+        }
+
+        if ((strcmp(word, "#ifdef") == 0) && (flags.processIfDef == TRUE)) {
+            // Call processIfDef (to be implemented)
+            copy = FALSE;
+        }
+
+        if (((strcmp(word, "//") == 0) || (strcmp(word, "/*"))) && (flags.processComments == TRUE)) {
+            // Call processComments (to be implemented)
+            copy = FALSE;
+        }
+
+        if (copy == TRUE) {
+            fprintf(outputFile, "%s", word);
+        }
+
+        free(word);
+    }
+}
+
+
+//PROCESS INCLUDE
+void processInclude(FILE *inputFile, FILE *outputFile, const char *filename)
+{
+    FILE *includedFile = fopen(filename, "r");
+    
+    if (includedFile == NULL)
+    {
+        perror("Error opening included file");
+    }
+
+    // Process the content of the included file
+    processFile(includedFile, outputFile, NULL);
+    fclose(includedFile);
 }
 
 /*-----------------------------------------------------------------------------------*/
@@ -156,65 +254,12 @@ int main(int argc, char *argv[])
     }
 
     //process file
-    //read the file, when you find a key word, if the flag is on, process it
-
+    //read the file word by word and process it
     long filePosition = 0;
-    while(!feof(inputFile))
-    {
-        copy = TRUE;
+    processFile(inputFile, outputFile, &filePosition);
 
-        char* word = takeWord(inputFile, &filePosition);
-        //filePosition = ftell(inputFile); //save position to read next word
-
-        for(int i = 0; i < dictionarySize; i++)
-        {
-            if(strcmp(dictionary[i].key, word) == 0) //si word está en el diccionario, sustituirlo por su valor
-            {
-                word = dictionary[i].value;
-                break;
-            }
-        }
-        
-        //comprobar keywords y flags activadas
-        if((strcmp(word,"#define") == 0) & (flags.processDirectives == TRUE))
-        {
-            //call processDefine
-            copy = FALSE;
-        }
-
-        if((strcmp(word,"#include") == 0) & (flags.processInclude == TRUE)) //al final será processDirectives
-        { 
-            word = takeWord(inputFile, &filePosition);
-            if(word != NULL)
-            {
-                processInclude(inputFile, outputFile, word);
-            }
-            //call processInclude
-                //processIncludedProgramFiles (like "comp-p1.h")
-                //processIncludedLibraryFiles (like <stdio.h>)
-            copy = FALSE;
-        }
-
-        if((strcmp(word,"#ifdef") == 0) & (flags.processIfDef == TRUE)) //al final será processDirectives
-        {
-            //call processIfDef
-            copy = FALSE;
-        }
-
-        if(((strcmp(word,"//") == 0) || (strcmp(word,"/*"))) && (flags.processComments == TRUE))
-        {
-            //call processComments
-            copy = FALSE;
-        }
-
-
-        if(copy == TRUE)
-        {
-            fprintf(outputFile, "%s", word);
-        }
-
-        free(word);
-    }
     fclose(inputFile);
     fclose(outputFile);
+
+    return 0;
 }
