@@ -6,6 +6,7 @@
 
 int main(int argc, char**argv)
 {
+    FILE* outputFile;
     if(DEBUG == 1) //debug mode: file handler initialized to output file
     {
         if (argc < 2)
@@ -21,9 +22,7 @@ int main(int argc, char**argv)
             return 1;
         }
         strcat(inputFileName, OUTPUT_EXT);
-        FILE *outputFile = fopen(inputFileName, "w");
-        // code here
-        // output format: line number <lexeme, category> <lexeme, category> ... \n
+        outputFile = fopen(inputFileName, "w");
         return 0;
     }
     else //release mode: file handler initialized to stdout
@@ -33,31 +32,19 @@ int main(int argc, char**argv)
             handleError(1, 1, "Usage: ./scanner <filename>");
             return 1;
         }
-        FILE *outputFile = stdout;
-        // code here
-        // output format: <lexeme, category> <lexeme, category> ...
+        outputFile = stdout;
+        return 0;
+    }
+
+    if(OUTPUTFORMAT == 1)
+    {
+        //debug mode: extract tokens like: line number <lexeme, category> <lexeme, category> ... \n
+        return 0;
+    }
+    else
+    {
+        //release mode: extract tokens like: <lexeme, category> <lexeme, category> ...
         return 0;
     }
 }
-
-
-// DEFINE CATEGORIES LIKE CAT_CATNAME
-// alphabet
-// types: int char void
-// operators: = > + *
-// special chars: ( ) { } ; , [ ]
-// numbers: 0-9
-// keywords: if else main return while
-// non essential: \n \t ' ' " "
-// literal: "hello world"
-// identifier: any alphanumeric string
-//     doesn't start with a number
-//     doesn't start with other category substrings, ex. can't start with i, c, v, e, m, r, w ?
-
-
-//CONSTRUCT TOKENS
-//token: line number <lexeme, category>
-
-
-//READ FILE
 

@@ -1,6 +1,7 @@
+#include "scanner.h"
+
 #ifndef ERROR_HANDLING_H
 #define ERROR_HANDLING_H
-#define DEBUG 1
 
 // Error identifiers
 enum ErrorIdentifier
