@@ -110,3 +110,22 @@ int charToColumn(char c)
     }
     return 25; // invalid column
 }
+
+int isFinalState(int state)
+{
+    if(state == CAT_TYPES || state == CAT_KEYWORD || state == CAT_IDENTIFIER || state == CAT_LITERAL || state == CAT_NONESSENTIAL || state == CAT_NUMBER || state == CAT_SPECIALCHAR || state == CAT_OPERAND)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+int FindNextState(char c)
+{
+    int column = charToColumn(c);
+    // to do: matrix of states
+    return 0;
+}
