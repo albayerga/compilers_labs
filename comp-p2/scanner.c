@@ -1,9 +1,9 @@
-#include "ErrorHandling.h"
-#include "scanner.h"
-#include "states.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "ErrorHandling.h"
+#include "scanner.h"
+#include "states.h"
 
 int main(int argc, char**argv)
 {
@@ -33,7 +33,7 @@ int main(int argc, char**argv)
         outputFile = stdout;
     }
 
-    //to do: read input file and extract tokens
+    //read input file and extract tokens
     char c;
     char* word = malloc(100);
     int word_length = 0;
@@ -45,13 +45,16 @@ int main(int argc, char**argv)
         
         if(isFinalState(nextState) == 1)
         {
-            // to do: keep reading until a final state is reached
-            fprintf(outputFile, "%s", word);
+            word[word_length] = c;
+            word_length++;
+            word[word_length] = '\0';
+            fprintf(outputFile, "<%s, %s>", word, finalStateToString(nextState)); //to do: formatear token según outputformat
+            word_length = 0;
+            actualState = START_STATE;
             //to do: look ahead
         }
         else
         {
-            //add char to word
             word[word_length] = c;
             word_length++;
             actualState = nextState;

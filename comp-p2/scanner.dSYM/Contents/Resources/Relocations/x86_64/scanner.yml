@@ -2,6 +2,12 @@
 triple:          'x86_64-apple-darwin'
 binary-path:     '/Users/albayerga/Desktop/compilers/compilers_labs/comp-p2/scanner'
 relocations:
-  - { offsetInCU: 0x26, offset: 0x26, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100003EB0, symSize: 0xA6 }
-  - { offsetInCU: 0x41, offset: 0x41, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100003EB0, symSize: 0xA6 }
+  - { offsetInCU: 0x26, offset: 0x26, size: 0x8, addend: 0x0, symName: _charToColumn, symObjAddr: 0x0, symBinAddr: 0x1000037F0, symSize: 0x470 }
+  - { offsetInCU: 0x3F, offset: 0x3F, size: 0x8, addend: 0x0, symName: _StatesMatrix, symObjAddr: 0x4E0, symBinAddr: 0x100008000, symSize: 0x0 }
+  - { offsetInCU: 0x68, offset: 0x68, size: 0x8, addend: 0x0, symName: _charToColumn, symObjAddr: 0x0, symBinAddr: 0x1000037F0, symSize: 0x470 }
+  - { offsetInCU: 0x90, offset: 0x90, size: 0x8, addend: 0x0, symName: _isFinalState, symObjAddr: 0x470, symBinAddr: 0x100003C60, symSize: 0x6F }
+  - { offsetInCU: 0x26, offset: 0xE5, size: 0x8, addend: 0x0, symName: _handleError, symObjAddr: 0x0, symBinAddr: 0x100003CD0, symSize: 0xC7 }
+  - { offsetInCU: 0x7A, offset: 0x139, size: 0x8, addend: 0x0, symName: _handleError, symObjAddr: 0x0, symBinAddr: 0x100003CD0, symSize: 0xC7 }
+  - { offsetInCU: 0x26, offset: 0x1A4, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100003DA0, symSize: 0x16E }
+  - { offsetInCU: 0x42, offset: 0x1C0, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100003DA0, symSize: 0x16E }
 ...
