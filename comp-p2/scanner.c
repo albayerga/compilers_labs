@@ -35,6 +35,7 @@ int main(int argc, char**argv)
 
     //read input file and extract tokens
     char c;
+    char ahead;
     char* word = malloc(100);
     int word_length = 0;
     int actualState = START_STATE;
@@ -47,11 +48,42 @@ int main(int argc, char**argv)
         {
             word[word_length] = c;
             word_length++;
+            if(nextState == CAT_NUMBER)
+            {
+                //look ahead: if there is a number ahead, keep reading
+                ahead = fgetc(inputFile);
+                int column_ahead = charToColumn(ahead);
+                int nextState_ahead = StatesMatrix[nextState][column_ahead];
+                while(nextState_ahead == CAT_NUMBER)
+                {
+                    word[word_length] = ahead;
+                    word_length++;
+                    ahead = fgetc(inputFile);
+                    column_ahead = charToColumn(ahead);
+                    nextState_ahead = StatesMatrix[nextState][column_ahead];
+                }
+                ungetc(ahead, inputFile);
+            }
+            else if(nextState == CAT_IDENTIFIER)
+            {
+                //look ahead: if there is an identifier ahead, keep reading
+                ahead = fgetc(inputFile);
+                int column_ahead = charToColumn(ahead);
+                int nextState_ahead = StatesMatrix[nextState][column_ahead];
+                while(nextState_ahead == CAT_IDENTIFIER)
+                {
+                    word[word_length] = ahead;
+                    word_length++;
+                    ahead = fgetc(inputFile);
+                    column_ahead = charToColumn(ahead);
+                    nextState_ahead = StatesMatrix[nextState][column_ahead];
+                }
+                ungetc(ahead, inputFile);
+            }
             word[word_length] = '\0';
             fprintf(outputFile, "<%s, %s>", word, finalStateToString(nextState)); //to do: formatear token según outputformat
             word_length = 0;
             actualState = START_STATE;
-            //to do: look ahead
         }
         else
         {
