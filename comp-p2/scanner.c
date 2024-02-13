@@ -36,7 +36,6 @@ int main(int argc, char**argv)
     }
 
     char tokenList[TOKEN_MAX][2][20];
-    int token_index = 0;
     
     saveToken(tokenList);
     if(OUTPUTFORMAT == 1)
