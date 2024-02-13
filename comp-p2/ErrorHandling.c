@@ -4,7 +4,7 @@
 
 void handleError(enum ErrorIdentifier errorId, enum StepIdentifier step, char* text)
 {
-    if (DEBUG)
+    if (DEBUG == 1)
     {
         switch (errorId)
         {
@@ -14,7 +14,9 @@ void handleError(enum ErrorIdentifier errorId, enum StepIdentifier step, char* t
             case ERROR_FILE_NOT_FOUND:
                 fprintf(stderr, "Error in %s: File %s not found\n", step == STEP_SCANNER ? "Scanner" : "Parser", text);
                 break;
-            // add more as needed
+            case ERROR_INVALID_CHARACTER:
+                fprintf(stderr, "Error in %s: Invalid character %s found in the input file\n", step == STEP_SCANNER ? "Scanner" : "Parser", text);
+                break;
             default:
                 fprintf(stderr, "Unknown error\n");
         }

@@ -17,6 +17,7 @@
 #define START_STATE 0
 #define NUM_STATES 32
 #define NUM_ALPHABET 24
+#define INVALID_CHAR 300 //for example
 
 extern int StatesMatrix[NUM_STATES][NUM_ALPHABET];
 
@@ -24,5 +25,6 @@ extern int StatesMatrix[NUM_STATES][NUM_ALPHABET];
 int charToColumn(char c);
 int isFinalState(int state);
 char* finalStateToString(int state);
+int notifySintaxErrorIfAny(int column, char c, FILE* outputFile);
 
 #endif // STATES_H

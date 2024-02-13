@@ -1,4 +1,6 @@
 #include "states.h"
+#include "scanner.h"
+#include "ErrorHandling.h"
 
 int StatesMatrix[NUM_STATES][NUM_ALPHABET] =
 {
@@ -144,7 +146,7 @@ int charToColumn(char c)
     {
         return 23;
     }
-    return 24; // invalid column
+    return INVALID_CHAR; // invalid column
 }
 
 int isFinalState(int state)
@@ -181,5 +183,18 @@ char* finalStateToString(int state)
             return "CAT_OPERAND";
         default:
             return "INVALID_STATE";
+    }
+}
+
+int notifySintaxErrorIfAny(int column, char c, FILE* outputFile)
+{
+    if (column == INVALID_CHAR)
+    {
+        handleError(3, 2, &c);
+        return 1; // erroR
+    }
+    else
+    {
+        return 0; // no error
     }
 }

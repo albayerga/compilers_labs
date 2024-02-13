@@ -8,6 +8,7 @@ enum ErrorIdentifier
 {
     ERROR_INVALID_USAGE = 1,
     ERROR_FILE_NOT_FOUND = 2,
+    ERROR_INVALID_CHARACTER = 3,
     // add more as needed
 };
 

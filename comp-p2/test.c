@@ -1,4 +1,6 @@
-if char
-void
-122*2
-1000hello
+if
+return
+char
+123*12
+//-- hello
+OLA
