@@ -1,0 +1,2 @@
+scanner: scanner.c ErrorHandling.c states.c scanner.h ErrorHandling.h states.h
+	gcc -o scanner scanner.c ErrorHandling.c states.c
