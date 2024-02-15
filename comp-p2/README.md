@@ -25,6 +25,7 @@ Default execution mode for this project:
 
     COUNTOP 1
     - This means operations will be counted for every token and we will have the sum at the end of the file.
+        (OUTPUTFORMAT must be 1 for this to happen).
     - If you want to desactivate the operation counting, change COUNTOP to 0.
 
 If you make any changes to the execution mode, just recompile it with "make -f mymakefile".
