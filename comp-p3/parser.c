@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "parser.h"
+#include "lexer.h"
 
 FILE* inputFile;
 FILE* outputFile;
@@ -36,4 +37,10 @@ int main(int argc, char**argv)
     //add output ext
     char* outputFileName = strcat(inputFileName, OUTPUT_EXT);
     outputFile = fopen(outputFileName, "w");
+
+    //parse
+    //to do
+
+    fclose(inputFile);
+    fclose(outputFile);
 }
