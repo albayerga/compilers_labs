@@ -1,0 +1,2 @@
+parser: parser.c parser.h
+	gcc -o parser parser.c
