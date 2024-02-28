@@ -7,10 +7,10 @@
 #define OFF 0
 
 #define DEBUG 1 // 0 = off, 1 = on
-#define OUTPUTFORMAT 1 // 0 = RELEASE (<lexeme, category> <lexeme, category> ...),
+#define OUTPUTFORMAT 0 // 0 = RELEASE (<lexeme, category> <lexeme, category> ...),
                        // 1 = DEBUG (line number <lexeme, category> <lexeme, category> ... \n)
 
-#define COUNTOP 1 //1 -> we count operations, 0 -> we don't
+#define COUNTOP 0 //1 -> we count operations, 0 -> we don't
 #define OUTPUT_EXT "scn"
 #define TOKEN_MAX 100000
 

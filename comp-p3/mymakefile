@@ -1,2 +1,2 @@
-parser: parser.c parser.h lexer.c lexer.h
-	gcc -o parser parser.c lexer.c
+parser: main.c main.h parser.c parser.h tokenize.c tokenize.h
+	gcc -o parser main.c parser.c tokenize.c
