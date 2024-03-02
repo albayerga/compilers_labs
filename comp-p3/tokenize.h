@@ -3,11 +3,12 @@
 
 #include <stdio.h>
 #define MAX_LEXEME_SIZE 100
+#define MAX_CATEGORY_SIZE 100
 #define MAX_TOKENS 1000
 
 typedef struct{
     char lexeme[MAX_LEXEME_SIZE];
-    char category[MAX_LEXEME_SIZE];
+    char category[MAX_CATEGORY_SIZE];
 } Token;
 
 typedef struct {
@@ -18,6 +19,6 @@ typedef struct {
 
 void pushToken(StackOfTokens* stackOfTokens, Token token);
 Token popToken(StackOfTokens* stackOfTokens);
-void tokenize(FILE* inputFile, FILE* outputFile, StackOfTokens* stackOfTokens);
+void tokenize(FILE* inputFile, StackOfTokens* stackOfTokens);
 
 #endif // TOKENIZE_H

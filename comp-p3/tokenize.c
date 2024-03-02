@@ -9,7 +9,9 @@ void pushToken(StackOfTokens* stackOfTokens, Token token)
 {
     if (stackOfTokens->top < MAX_TOKENS)
     {
-        stackOfTokens->tokens[stackOfTokens->top++] = token;
+        stackOfTokens->top++;
+        stackOfTokens->tokens[stackOfTokens->top] = token;
+        stackOfTokens->size++;
     }
     else
     {
@@ -19,28 +21,49 @@ void pushToken(StackOfTokens* stackOfTokens, Token token)
 
 Token popToken(StackOfTokens* stackOfTokens)
 {
-    return stackOfTokens->tokens[--stackOfTokens->top];
+    stackOfTokens->top--;
+    stackOfTokens->size--;
+    return stackOfTokens->tokens[stackOfTokens->top];
 }
 
 
-void tokenize(FILE* inputFile, FILE* outputFile, StackOfTokens* stackOfTokens)
+void tokenize(FILE* inputFile, StackOfTokens* stackOfTokens)
 {
     //read the tokens of the file and store them in a stack of tokens
     //token like <lexeme, category>
 
-    Token token;
-    char buffer[100];
-    while (fscanf(inputFile, "%s", buffer) != EOF)
+    char c;
+    int i;
+
+    while ((c = fgetc(inputFile)) != EOF)
     {
-        if (sscanf(buffer, "<%[^,],%[^>]>", token.lexeme, token.category) == 2)
+        if(c == '<')
         {
+            //next is lexeme
+            char lexeme[MAX_LEXEME_SIZE];
+            i = 0;
+            while ((c = fgetc(inputFile)) != ',')
+            {
+                lexeme[i] = c;
+                i++;
+            }
+            lexeme[i] = '\0';
+
+            //next is a space and then category, so i=1
+            char category[MAX_CATEGORY_SIZE];
+            i = 1;
+            while ((c = fgetc(inputFile)) != '>')
+            {
+                category[i] = c;
+                i++;
+            }
+            category[i] = '\0';
+
+            //create token and push it to the stack
+            Token token;
+            strcpy(token.lexeme, lexeme);
+            strcpy(token.category, category);
             pushToken(stackOfTokens, token);
-            //write token.lexeme to output file
-            fprintf(outputFile, "%s", token.lexeme);
-        }
-        else
-        {
-            printf("Invalid token format: %s\n", buffer);
         }
     }
 }

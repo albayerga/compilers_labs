@@ -42,10 +42,17 @@ int main(int argc, char**argv)
 
     //tokenize
     stackOfTokens = (StackOfTokens*)malloc(sizeof(StackOfTokens));
-    stackOfTokens->top = 0;
-    tokenize(inputFile, outputFile, stackOfTokens);
+    stackOfTokens->top = -1; //initialize top
+    tokenize(inputFile, stackOfTokens); //all tokens are now in the stack, first token is at the bottom of the stack
 
-    //parse
+    //ESTE PRINT NO HACE FALTA, SOLO PARA VERIFICAR QUE LOS TOKENS SE HAYAN GUARDADO CORRECTAMENTE !!!
+    //print tokens to output file, start from the bottom of the stack
+    for(int i = 0; i < stackOfTokens->size; i++)
+    {
+        fprintf(outputFile, "%s", stackOfTokens->tokens[i].lexeme);
+    }
+
+    //AQUÍ LLAMAR A LA FUNCIÓN PARSE
     //to do
 
     fclose(inputFile);
