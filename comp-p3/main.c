@@ -45,15 +45,24 @@ int main(int argc, char**argv)
     stackOfTokens->top = -1; //initialize top
     tokenize(inputFile, stackOfTokens); //all tokens are now in the stack, first token is at the bottom of the stack
 
-    //ESTE PRINT NO HACE FALTA, SOLO PARA VERIFICAR QUE LOS TOKENS SE HAYAN GUARDADO CORRECTAMENTE !!!
-    //print tokens to output file, start from the bottom of the stack
+    //crear array con todos los lexemas de StackOfTokens
+    char* lexemes[stackOfTokens->size];
+    printf("Stack of tokens size: %d\n", stackOfTokens->size);
     for(int i = 0; i < stackOfTokens->size; i++)
     {
-        fprintf(outputFile, "%s", stackOfTokens->tokens[i].lexeme);
+        lexemes[i] = stackOfTokens->tokens[i].lexeme;
     }
 
+    //imprimir array de lexemas
+    printf("Code to parse: ");
+    for(int i = 0; i < stackOfTokens->size; i++)
+    {
+        printf("%s", lexemes[i]);
+    }
+    printf("\n");
+
     //AQUÍ LLAMAR A LA FUNCIÓN PARSE
-    //to do
+    parse(lexemes, stackOfTokens->size, outputFile);
 
     fclose(inputFile);
     fclose(outputFile);

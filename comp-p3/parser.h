@@ -1,22 +1,18 @@
-// #ifndef PARSER_H
-// #define PARSER_H
+#ifndef PARSER_H
+#define PARSER_H
 
-// #include <stdio.h>
-// #include <stdbool.h>
+#include <stdio.h>
+#include <stdbool.h>
 
-// #define STACK_SIZE 100
+#define ROWS 12
+#define COLS 6
+#define MAX_STACK 25
+#define MAX_STRING 10
+#define ACCEPT 1000
 
-// typedef struct {
-//     char items[STACK_SIZE];
-//     int top;
-// } Stack;
+//declarar funciones
+int getLength(char (*array)[COLS]);
+int getTkn(char *token);
+int parse(char *tokens[6], int size, FILE* outputFile);
 
-// void initialize(Stack *s);
-// void push(Stack *s, char c);
-// char pop(Stack *s);
-// bool isTerminal(char c);
-// bool isNonTerminal(char c);
-// char *reduce(Stack *s);
-// bool parse(char *input_string);
-
-// #endif // PARSER_H
+#endif // PARSER_H

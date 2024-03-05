@@ -1,1 +1,28 @@
-(2+3)*6
+Operation: SHIFT, Input position: 1, Current state: 1, Previous state: 0 
+Stack: int 
+
+Operation: REDUCE, Input position: 1, Current state: 2, Previous state: 1 
+Stack: E 
+
+Operation: SHIFT, Input position: 2, Current state: 3, Previous state: 2 
+Stack: E + 
+
+Operation: SHIFT, Input position: 3, Current state: 4, Previous state: 3 
+Stack: E + ( 
+
+Operation: SHIFT, Input position: 4, Current state: 5, Previous state: 4 
+Stack: E + ( int 
+
+Operation: REDUCE, Input position: 4, Current state: 6, Previous state: 5 
+Stack: E + ( E 
+
+Operation: SHIFT, Input position: 5, Current state: 7, Previous state: 6 
+Stack: E + ( E ) 
+
+Operation: REDUCE, Input position: 5, Current state: 2, Previous state: 7 
+Stack: E 
+
+Operation: SHIFT, Input position: 6, Current state: 1000, Previous state: 2 
+Stack: E $ 
+
+Code parsed successfully
